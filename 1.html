@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>運動用品專賣店</title>
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif;
+    background-color: #D6E9FF; /* 淡藍 */
+    color: #000; /* 黑字 */
+  }
+  header {
+    background-color: #D6E9FF;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  nav a {
+    color: #000;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  nav a:hover, nav a.active {
+    color: #007BFF;
+  }
+  main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+  }
+  section {
+    display: none;
+  }
+  section.active {
+    display: block;
+  }
+  /* Hero */
+  .hero {
+    text-align: center;
+  }
+  .hero img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .hero p {
+    max-width: 600px;
+    margin: 20px auto;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  /* 產品介紹 */
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .product-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 280px;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .product-card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  /* 品牌故事 */
+  .about p {
+    font-size: 18px;
+    line-height: 1.6;
+    background: #e5f0ff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  /* 最新消息 */
+  .news-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .news-list li {
+    background: #fff;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  .news-list li:hover {
+    background: #d6e9ff;
+  }
+  /* 聯絡我們 */
+  .contact form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  .contact label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .contact input, .contact textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    resize: vertical;
+  }
+  .contact button {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .contact button:hover {
+    background-color: #0056b3;
+  }
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid #ccc;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #333;
+  }
+  /* Responsive */
+  @media(max-width: 768px){
+    .products {
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-card {
+      width: 90%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>運動用品專賣店</h1>
+  <nav>
+    <a href="#" class="nav-link active" data-target="home">首頁</a>
+    <a href="#" class="nav-link" data-target="products">產品介紹</a>
+    <a href="#" class="nav-link" data-target="about">品牌故事</a>
+    <a href="#" class="nav-link" data-target="news">最新消息</a>
+    <a href="#" class="nav-link" data-target="contact">聯絡我們</a>
+  </nav>
+</header>
+
+<main>
+  <!-- 首頁 -->
+  <section id="home" class="active">
+    <div class="hero">
+      <h2>打造你的專屬運動風格</h2>
+      <p>
+        我們專注提供專業且高品質的運動用品，涵蓋跑鞋、運動服與多樣化運動配件，  
+        助你提升運動表現，享受健康生活。無論你是初學者還是運動達人，這裡都是你的最佳選擇。
+      </p>
+      <img src="https://images.unsplash.com/photo-1526403223031-1e3382090b30?auto=format&fit=crop&w=800&q=80" alt="運動用品">
+    </div>
+  </section>
+
+  <!-- 產品介紹 -->
+  <section id="products">
+    <h2>產品介紹</h2>
+    <div class="products">
+      <div class="product-card" onclick="alert('專業跑鞋詳情：輕盈舒適，提升跑步表現，適合長跑和馬拉松。')">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="跑鞋">
+        <h3>專業跑鞋</h3>
+        <p>輕盈舒適，提升跑步表現</p>
+      </div>
+      <div class="product-card" onclick="alert('高透氣運動服詳情：吸濕排汗，輕便透氣，適合各種運動。')">
+        <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=400&q=80" alt="運動服">
+        <h3>高透氣運動服</h3>
+        <p>吸濕排汗，活動自如</p>
+      </div>
+      <div class="product-card" onclick="alert('運動配件詳情：手環、護膝等全方位支援，提升運動安全與舒適度。')">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80" alt="運動配件">
+        <h3>運動配件</h3>
+        <p>手環、護膝等全方位支援</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 品牌故事 -->
+  <section id="about" class="about">
+    <h2>品牌故事</h2>
+    <p>我們是一家專注於提供高品質運動用品的專賣店，致力於幫助每一位運動愛好者找到適合自己的裝備。從跑鞋、運動服到各類配件，我們精選來自知名品牌的產品，並提供專業的諮詢服務，讓您在運動中更自信、更舒適。</p>
+  </section>
+
+  <!-- 最新消息 -->
+  <section id="news">
+    <h2>最新消息</h2>
+    <ul class="news-list">
+      <li onclick="alert('2025/10/15 週年慶活動，全館商品85折優惠！')">2025/10/15 週年慶活動，全館商品85折優惠！</li>
+      <li onclick="alert('2025/11/01 新款跑鞋上市，提供專業試穿體驗。')">2025/11/01 新款跑鞋上市，提供專業試穿體驗。</li>
+      <li onclick="alert('2025/12/01 會員專屬折扣，加入會員享更多優惠！')">2025/12/01 會員專屬折扣，加入會員享更多優惠！</li>
+    </ul>
+  </section>
+
+  <!-- 聯絡我們 -->
+  <section id="contact" class="contact">
+    <h2>聯絡我們</h2>
+    <form onsubmit="event.preventDefault(); alert('感謝您的訊息，我們會盡快回覆您！'); this.reset();">
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" required placeholder="請輸入您的姓名" />
+
+      <label for="email">電子郵件</label>
+      <input type="email" id="email" name="email" required placeholder="請輸入您的電子郵件" />
+
+      <label for="message">訊息內容</label>
+      <textarea id="message" name="message" rows="5" required placeholder="請輸入您的訊息"></textarea>
+
+      <button type="submit">送出</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 運動用品專賣店 | 聯絡電話: 1234-5678 | Email: info@sportstore.com</p>
+</footer>
+
+<script>
+  const navLinks = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('main section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('data-target');
+
+      // 切換 active 導航
+      navLinks.forEach(nav => nav.classList.remove('active'));
+      link.classList.add('active');
+
+      // 顯示對應 section
+      sections.forEach(sec => {
+        if (sec.id === targetId) {
+          sec.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          sec.classList.remove('active');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
+
