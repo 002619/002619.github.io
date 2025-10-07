@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>台灣好牛 BeefShop</title>
+<style>
+body {font-family: "Microsoft JhengHei", sans-serif; margin:0; background:#fffaf5; color:#333;}
+header {background:#8b0000; color:white; padding:20px; text-align:center;}
+nav a {color:white; margin:0 15px; text-decoration:none; font-weight:bold; cursor:pointer;}
+nav a:hover {text-decoration:underline;}
+section {padding:50px 10%; display:none;}
+section.active {display:block;}
+.hero {background:url('https://images.unsplash.com/photo-1603046891745-6e8f72bc40d1?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat; color:white; text-align:center; padding:120px 20px;}
+.hero h2 {font-size:38px; margin-bottom:20px; text-shadow:2px 2px 6px rgba(0,0,0,0.5);}
+.btn {display:inline-block; background:#8b0000; color:white; padding:12px 24px; border-radius:5px; text-decoration:none;}
+.btn:hover {background:#a52a2a;}
+.feature-box, .product-list {display:flex; justify-content:center; gap:40px; flex-wrap:wrap;}
+.feature-box div, .product {width:280px; text-align:center;}
+.feature-box img, .product img {width:100%; border-radius:10px; height:200px; object-fit:cover;}
+.product img {height:220px;}
+.price {color:#8b0000; font-weight:bold;}
+.stock {color:#008000; font-weight:bold;}
+.outofstock {color:#ff0000; font-weight:bold;}
+.about {display:flex; align-items:center; gap:40px; flex-wrap:wrap;}
+.about img {width:45%; border-radius:15px; object-fit:cover;}
+form {display:flex; flex-direction:column; width:300px; margin:auto; gap:10px;}
+input, textarea {padding:10px; border:1px solid #ccc; border-radius:5px; font-size:14px;}
+button {background:#8b0000; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;}
+button:hover {background:#a52a2a;}
+footer {text-align:center; background:#8b0000; color:white; padding:20px; margin-top:50px;}
+/* 購物車 */
+#cart {position:fixed; right:20px; top:80px; background:white; border:2px solid #8b0000; border-radius:10px; padding:15px; width:300px; max-height:400px; overflow-y:auto; display:none; z-index:1000;}
+#cart h3 {margin-top:0; color:#8b0000;}
+.cart-item {display:flex; justify-content:space-between; margin-bottom:10px;}
+.cart-item button {margin-left:5px;}
+#cart-total {font-weight:bold; margin-top:10px;}
+#cart button {margin-top:10px; width:100%;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>台灣好牛 BeefShop</h1>
+<nav>
+<a onclick="showSection('home')">首頁</a>
+<a onclick="showSection('products')">商品介紹</a>
+<a onclick="showSection('about')">關於我們</a>
+<a onclick="showSection('contact')">聯絡我們</a>
+<a onclick="toggleCart()">購物車 🛒</a>
+</nav>
+</header>
+
+<!-- 首頁 -->
+<section id="home" class="active">
+<div class="hero">
+<h2>嚴選台灣牛，安心又美味</h2>
+<p>我們堅持提供最新鮮、最高品質的台灣牛肉，讓您吃得安心又滿足。</p>
+<a class="btn" onclick="showSection('products')">立即選購</a>
+</div>
+<div class="feature-box">
+<div>
+<img src="https://images.unsplash.com/photo-1606755962773-0cbbbc8c92a9?auto=format&fit=crop&w=800&q=80" alt="新鮮牛肉">
+<h4>新鮮現切</h4>
+<p>每天現宰配送，確保最新鮮的風味。</p>
+</div>
+<div>
+<img src="https://images.unsplash.com/photo-1627308595186-9a047d1e287e?auto=format&fit=crop&w=800&q=80" alt="產地直送">
+<h4>產地直送</h4>
+<p>與在地牧場合作，產地直送新鮮到家。</p>
+</div>
+<div>
+<img src="https://images.unsplash.com/photo-1602524201469-0b30b72a02ef?auto=format&fit=crop&w=800&q=80" alt="牧場">
+<h4>安心品質</h4>
+<p>每塊牛肉皆通過 SGS 檢驗與溯源管理。</p>
+</div>
+</div>
+</section>
+
+<!-- 商品介紹 -->
+<section id="products">
+<h2 style="text-align:center;">商品介紹</h2>
+<div class="product-list" id="product-list">
+<!-- 商品會由 JS 生成 -->
+</div>
+</section>
+
+<!-- 關於我們 -->
+<section id="about">
+<h2 style="text-align:center;">關於我們</h2>
+<div class="about">
+<img src="https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?auto=format&fit=crop&w=1000&q=80" alt="牧場">
+<div>
+<h3>從牧場到餐桌的每一步，我們都堅持品質。</h3>
+<p>台灣好牛創立於 2020 年，專注於提供優質本地牛肉。我們與全台認證牧場合作，從飼養、宰切到包裝，全程溯源、透明化，讓顧客吃得安心。</p>
+<p>我們相信：好的牛肉，來自對土地與動物的尊重。</p>
+</div>
+</div>
+</section>
+
+<!-- 聯絡我們 -->
+<section id="contact">
+<h2 style="text-align:center;">聯絡我們</h2>
+<form>
+<input type="text" placeholder="您的姓名" required>
+<input type="email" placeholder="電子郵件" required>
+<textarea rows="4" placeholder="留言內容" required></textarea>
+<button type="submit">送出留言</button>
+</form>
+</section>
+
+<!-- 購物車 -->
+<div id="cart">
+<h3>購物車 🛒</h3>
+<div id="cart-items"></div>
+<div id="cart-total">總計: $0</div>
+<button onclick="clearCart()">清空購物車</button>
+</div>
+
+<footer>
+<p>© 2025 台灣好牛 BeefShop</p>
+</footer>
+
+<script>
+// 商品資料含庫存
+let products = [
+{name:'頂級肋眼牛排', price:780, stock:10, img:'https://images.unsplash.com/photo-1601050690597-3d9a9b5c6e3c?auto=format&fit=crop&w=800&q=80'},
+{name:'精選牛腩', price:420, stock:8, img:'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80'},
+{name:'火鍋牛肉片', price:350, stock:15, img:'https://images.unsplash.com/photo-1604908177073-ec6e434e8a5a?auto=format&fit=crop&w=800&q=80'}
+];
+
+let cart = [];
+
+// 顯示頁面
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// 切換購物車
+function toggleCart(){
+  const cartDiv = document.getElementById('cart');
+  cartDiv.style.display = cartDiv.style.display==='block'?'none':'block';
+}
+
+// 生成商品列表
+function renderProducts(){
+  const list = document.getElementById('product-list');
+  list.innerHTML = '';
+  products.forEach((p,i)=>{
+    const div = document.createElement('div');
+    div.className='product';
+    let stockText = p.stock>0?`<span class="stock">庫存: ${p.stock}</span>`:`<span class="outofstock">缺貨</span>`;
+    div.innerHTML=`<img src="${p.img}" alt="${p.name}">
+    <h3>${p.name}</h3>
+    <p>價格: $${p.price}</p>
+    ${stockText}<br>
+    <button onclick="addToCart(${i})" ${p.stock===0?'disabled':''}>加入購物車</button>`;
+    list.appendChild(div);
+  });
+}
+
+// 加入購物車
+function addToCart(index){
+  if(products[index].stock===0){
+    alert('商品已售完');
+    return;
+  }
+  const existing = cart.find(c=>c.index===index);
+  if(existing){ existing.qty++; }
+  else{ cart.push({index:index, name:products[index].name, price:products[index].price, qty:1}); }
+  products[index].stock--;
+  renderProducts();
+  updateCart();
+}
+
+// 更新購物車
+function updateCart(){
+  const itemsDiv = document.getElementById('cart-items');
+  itemsDiv.innerHTML='';
+  let total=0;
+  cart.forEach((item,i)=>{
+    const subtotal = item.price*item.qty;
+    total+=subtotal;
+    const div = document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`${item.name} x${item.qty} - $${subtotal} <button onclick="removeItem(${i})">刪除</button>`;
+    itemsDiv.appendChild(div);
+  });
+  document.getElementById('cart-total').innerText = "總計: $" + total;
+}
+
+// 刪除購物車項目
+function removeItem(i){
+  const item = cart[i];
+  products[item.index].stock += item.qty; // 回補庫存
+  cart.splice(i,1);
+  renderProducts();
+  updateCart();
+}
+
+// 清空購物車
+function clearCart(){
+  cart.forEach(item=>products[item.index].stock += item.qty);
+  cart=[];
+  renderProducts();
+  updateCart();
+}
+
+// 初始渲染
+renderProducts();
+</script>
+
+</body>
+</html>
