@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TariffSolver AI 完整版</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family:sans-serif; background:#f3f6f9; margin:0; padding:0;}
+  header { background:#003366; color:white; padding:20px; text-align:center;}
+  .container { max-width:800px; margin:20px auto; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+  input, select, button { width:100%; padding:10px; margin-top:10px; border-radius:6px; border:1px solid #ccc; font-size:16px;}
+  button { background:#0073e6; color:white; border:none; cursor:pointer; font-weight:bold;}
+  button:hover { background:#0059b3;}
+  .card { background:#f1f5f9; padding:15px; border-radius:8px; margin-top:15px;}
+  table { width:100%; border-collapse:collapse; margin-top:15px;}
+  th,td { border:1px solid #ccc; padding:8px; text-align:center;}
+  td img { width:30px; height:20px; vertical-align:middle; margin-right:5px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💹 TariffSolver AI</h1>
+  <p>分析關稅對股市影響並提供投資策略</p>
+</header>
+
+<div class="container">
+  <h2>1️⃣ 輸入關稅與產業</h2>
+  <input type="number" id="tariff" placeholder="關稅變化 % (+上升, -下降)">
+  <select id="industry">
+    <option value="all">全部產業</option>
+    <option value="automobile">汽車</option>
+    <option value="semiconductor">半導體</option>
+    <option value="steel">鋼鐵</option>
+    <option value="shipping">航運</option>
+  </select>
+  <button onclick="solve()">分析與策略</button>
+  
+  <div id="result" class="card" style="display:none;"></div>
+  
+  <canvas id="chart"></canvas>
+</div>
+
+<div class="container">
+  <h2>2️⃣ 歷史關稅案例查詢</h2>
+  <input type="text" id="searchInput" placeholder="輸入產業或國家搜尋...">
+  <label>開始日期：</label>
+  <input type="date" id="startDate">
+  <label>結束日期：</label>
+  <input type="date" id="endDate">
+  <label>排序方式：</label>
+  <select id="sortBy">
+    <option value="date">日期</option>
+    <option value="tariff">關稅幅度</option>
+    <option value="impact">股市影響</option>
+  </select>
+  <button onclick="filterData()">查詢</button>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>國家</th>
+        <th>產業</th>
+        <th>關稅變化(%)</th>
+        <th>股市影響(%)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+  // 歷史資料（加上國旗圖片）
+  const historyData = [
+    {date:'2025-01-15', country:'美國', industry:'汽車', tariff:10, impact:-3, img:'https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg'},
+    {date:'2025-02-20', country:'中國', industry:'半導體', tariff:5, impact:-2, img:'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_the_People%27s_Republic_of_China.svg'},
+    {date:'2025-03-10', country:'德國', industry:'鋼鐵', tariff:-5, impact:2, img:'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg'},
+    {date:'2025-04-05', country:'日本', industry:'電子', tariff:8, impact:-1.5, img:'https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg'},
+    {date:'2025-05-12', country:'韓國', industry:'航運', tariff:-3, impact:1, img:'https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg'}
+  ];
+
+  // AI分析函數
+  function solve(){
+    const tariff = parseFloat(document.getElementById('tariff').value);
+    const industry = document.getElementById('industry').value;
+    const result = document.getElementById('result');
+    if(isNaN(tariff)){ result.style.display='block'; result.innerHTML='⚠️ 請輸入數字'; return;}
+
+    let message="", advice="", risk="", trend=[];
+
+    if(tariff>0){
+      message = `📉 關稅上升 ${tariff}% 可能導致企業成本上升、股市短期可能下跌。`;
+      advice = "✅ 投資策略：減少出口導向股票，增加內需、防禦型股票持股";
+      risk = "⚠️ 風險提示：股市波動大，建議分散投資或使用ETF/期貨避險";
+      trend=[100,98,95,93,92,94];
+    } else if(tariff<0){
+      message = `📈 關稅下降 ${Math.abs(tariff)}% 可能促進貿易與企業獲利，股市可能上升。`;
+      advice = "✅ 投資策略：增加出口導向股票持股";
+      risk = "⚠️ 風險提示：仍需觀察國際需求波動";
+      trend=[100,102,105,108,112,115];
+    } else{
+      message = "🔹 關稅未變，市場維持穩定";
+      advice = "✅ 投資策略：觀察產業與市場動態";
+      risk="";
+      trend=[100,100,100,101,100,101];
+    }
+
+    if(industry!=="all"){ message+=`<br>🏭 專注產業：${industry}`; }
+
+    result.style.display='block';
+    result.innerHTML=`<strong>分析結果：</strong><br>${message}<br><strong>建議策略：</strong>${advice}<br>${risk}`;
+
+    // 更新圖表
+    const ctx = document.getElementById('chart');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Day1','Day2','Day3','Day4','Day5','Day6'],
+        datasets:[{
+          label:'模擬股價走勢',
+          data: trend,
+          borderColor:'#0073e6',
+          borderWidth:3,
+          fill:false,
+          tension:0.2
+        }]
+      },
+      options: { scales:{y:{beginAtZero:false}}, plugins:{legend:{display:true}} }
+    });
+  }
+
+  // 歷史資料查詢
+  function filterData(){
+    const keyword = document.getElementById('searchInput').value.toLowerCase();
+    const start = document.getElementById('startDate').value;
+    const end = document.getElementById('endDate').value;
+    const sortBy = document.getElementById('sortBy').value;
+
+    let filtered = historyData.filter(item=>{
+      const matchKeyword = !keyword || item.country.toLowerCase().includes(keyword) || item.industry.toLowerCase().includes(keyword);
+      const matchStart = !start || item.date >= start;
+      const matchEnd = !end || item.date <= end;
+      return matchKeyword && matchStart && matchEnd;
+    });
+
+    filtered.sort((a,b)=>{
+      if(sortBy==='date') return new Date(a.date)-new Date(b.date);
+      if(sortBy==='tariff') return b.tariff - a.tariff;
+      if(sortBy==='impact') return b.impact - a.impact;
+    });
+
+    const tbody = document.querySelector('#dataTable tbody');
+    tbody.innerHTML = '';
+    filtered.forEach(item=>{
+      tbody.innerHTML += `<tr>
+        <td>${item.date}</td>
+        <td><img src="${item.img}" alt="${item.country}"> ${item.country}</td>
+        <td>${item.industry}</td>
+        <td>${item.tariff}</td>
+        <td>${item.impact}</td>
+      </tr>`;
+    });
+  }
+
+  // DOM 載入完成後初始化表格
+  document.addEventListener('DOMContentLoaded', filterData);
+</script>
+
+</body>
+</html>
+
